@@ -51,7 +51,7 @@ jobs:
             uses: docker/login-action@v3
             with:
                 username: ${{ secrets.DOCKER_USERNAME }}
-                password: ${{ secretes.DOCKER_TOKEN }}
+                password: ${{ secrets.DOCKER_TOKEN }}
           - name: Docker Push
             uses: docker/build-push-action@v6
             with:
@@ -67,7 +67,9 @@ jobs:
           - name: checkout-code
             uses: actions/checkout@v4
             with: ${{ secrets.GitHub_TOKEN }}
-            
+          - name: Update tag in Kubernetes deployment manifest
+            run: |
+                 sed -i 's/tag: .*/tag: "${{github.run_id}}"/' kubernetes/productcatalog/deploy.yaml
     
                       
               
